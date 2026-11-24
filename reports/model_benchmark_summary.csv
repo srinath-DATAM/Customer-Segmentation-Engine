@@ -1,0 +1,6 @@
+model,cluster_found,silhouette_score,Noise_count
+K-Means (k=4),4,0.3373,0
+Agglomerative Clustering (k=4),4,0.2693,0
+DBSCAN (eps=0.5),2,0.2493,30
+HDBSCAN (min_cluster_size=30),3,0.1075,822
+GMM (k=4),4,0.1775,0
