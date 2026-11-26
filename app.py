@@ -135,16 +135,23 @@ def main():
         monetary_val = st.number_input("Monetary (total spend)", min_value=0.0, value=3500.0, step=50.0)
 
     if st.button("Predict Segment", type="primary"):
-        result = predict_customer(
-            recency=recency_val,
-            frequency=frequency_val,
-            monetary=monetary_val,
-            model=model,
-            scaler=scaler,
-        )
-        st.success(f"**Predicted Persona:** {result['persona']} (Cluster `{result['cluster']}`)")
-        st.write(f"**Segment Summary:** {result['summary']}")
-        st.write(f"**Recommended Action:** {result['action']}")
+        try:
+            result = predict_customer(
+                recency=recency_val,
+                frequency=frequency_val,
+                monetary=monetary_val,
+                model=model,
+                scaler=scaler,
+            )
+            if result.get("is_valid_customer", True) and result.get("cluster") is not None:
+                st.success(f"**Predicted Persona:** {result['persona']} (Cluster `{result['cluster']}`)")
+            else:
+                st.warning(f"**Status / Note:** {result['persona']}")
+
+            st.write(f"**Segment Summary:** {result['summary']}")
+            st.write(f"**Recommended Action:** {result['action']}")
+        except ValueError as exc:
+            st.error(str(exc))
 
 
 if __name__ == "__main__":
